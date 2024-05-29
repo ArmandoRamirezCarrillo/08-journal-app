@@ -4,7 +4,7 @@ import { JournalRoutes } from '../journal/routes/JournalRoutes';
 
 const AppRoutes = [
     {
-        path: '/auth/*',
+        path: '/auth',
         children: AuthRoutes,
     },
     {

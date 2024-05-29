@@ -1,25 +1,17 @@
-import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import { LoginPage, RegisterPage } from "../pages";
 
-const router = createBrowserRouter([
+export const AuthRoutes = [
     {
-        path: '/login',
+        path: '/auth/login',
         element: <LoginPage/>
     },
     {
-        path: '/register',
+        path: '/auth/register',
         element: <RegisterPage/>
     },
     {
-        path: '*',
+        path: '/auth/*',
         element: <Navigate to={'/auth/login'}/>
     }
-]);
-
-export const AuthRoutes = () => {
-  return (
-    <>
-        <RouterProvider router={router}/>
-    </>
-  )
-}
+]
