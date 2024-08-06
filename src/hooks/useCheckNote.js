@@ -7,7 +7,7 @@ import 'sweetalert2/dist/sweetalert2.css';
 
 export const useCheckNote = () => {
     const dispatch = useDispatch();
-    const {active:note, messageSaved, isSaving} = useSelector(state => state.journal);
+    const {active:note, messageSaved, isSaving, imageUrls} = useSelector(state => state.journal);
     const {body,title, date, onInputChange, formState} = useForm(note);
     const dateString = useMemo(() => {
         return new Date(date).toUTCString();
@@ -25,6 +25,6 @@ export const useCheckNote = () => {
     
 
     return {
-        body, title, dateString, isSaving,onInputChange
+        body, title, dateString, isSaving, note, onInputChange
     }
 }

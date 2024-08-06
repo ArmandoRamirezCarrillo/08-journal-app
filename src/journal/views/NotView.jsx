@@ -1,15 +1,14 @@
-import { Label, SaveOutlined, UploadOutlined } from '@mui/icons-material'
+import { DeleteOutline, SaveOutlined, UploadOutlined } from '@mui/icons-material'
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material'
 import { ImageGallery } from '../components'
 import { useCheckNote } from '../../hooks/useCheckNote'
 import { useDispatch } from 'react-redux'
-import { startSaveNote } from '../../store/journal'
-import { useRef } from 'react'
+import { startDeletingNote, startSaveNote, startUploadingFiles } from '../../store/journal'
 
 export const NotView = () => {
 
     const dispatch = useDispatch();
-    const {body, title, dateString, isSaving, onInputChange} = useCheckNote();
+    const {body, title, dateString, isSaving, note, onInputChange} = useCheckNote();
 
     const onSaveNote = () => {
         dispatch(startSaveNote());
@@ -17,11 +16,12 @@ export const NotView = () => {
 
     const onFileInputChange = ({target}) => {
         if(target.files === 0) return;
-        console.log('Subiendo archivo');
-        // dispatch(startUploadingFiles(target.files));
+        dispatch(startUploadingFiles(target.files));
     }
 
-    // const fileInputRef = useRef();
+    const onDelete = () => {
+        dispatch(startDeletingNote());
+    }
 
     return (
         <Grid className='animate__animated animate__fadeIn animate__faster' container direction='row' justifyContent='space-between' alignItems='center' sx={{mb: 1}}>
@@ -31,9 +31,9 @@ export const NotView = () => {
             <Grid item>
                 <input type='file' multiple id="btnFile" onChange={onFileInputChange} style={{display:'none'}}/>
                 <IconButton color='primary' disabled={isSaving}>
-                    <Label htmlFor="btnFile">
+                    <label htmlFor="btnFile">
                         <UploadOutlined/>
-                    </Label>
+                    </label>
                 </IconButton>
                 <Button disabled={isSaving} onClick={onSaveNote} color='primary' sx={{padding: 2}}>
                     <SaveOutlined sx={{fontSize: 30, mr: 1}}/>
@@ -48,8 +48,14 @@ export const NotView = () => {
                 <TextField type='text' variant='filled' fullWidth multiline placeholder='¿Que sucedio en el día de hoy?' 
                 minRows={5} name='body' value={body} onChange={onInputChange}/>
             </Grid>
+            <Grid container justifyContent='end'>
+                <Button onClick={onDelete} sx={{mt:2}} color='error'>
+                    <DeleteOutline/>
+                    Borrar
+                </Button>
+            </Grid>
             {/* Imagenes */}
-            <ImageGallery/>
+            <ImageGallery images={note.imageUrls}/>
         </Grid>
     )
 }
